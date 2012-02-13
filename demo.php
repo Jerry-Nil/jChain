@@ -1,0 +1,19 @@
+<?php
+if(isset($_GET['opt']))
+{
+	echo json_encode(
+		array('options'=>
+			array(
+				array(
+					'value'=>$_GET['opt'],
+					'text'=>$_GET['opt']
+				),
+				array(
+					'value'=>$_GET['opt']+1,
+					'text'=>$_GET['opt']+1
+				),
+			)
+		)
+	);
+}
+?>

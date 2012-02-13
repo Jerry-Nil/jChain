@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jquery Select</title>
+	<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="jquery-chained.js"></script>
+
+</head>
+<body>
+	<div id='ppp'>
+	<select name="s1" id="s1">
+		<option value="1" selected="selected">北京</option>
+		<option value="29">上海</option>
+		<option value="30">浙江</option>
+		<option value="99">其实我是个错误的选项</option>
+	</select>
+	<select name="s2" id="s2"></select>
+	<br />
+	<div>
+		<p><a href="javascript:;" onclick="$('#s2').addOption({value:'999999',text:'test'});">Click me</a> to add an option into the second select.</p>
+		<p>It used function addOption().</p>
+	</div>
+</div>
+<script type="text/javascript" src="demo.js"></script>
+</body>
+</html>
