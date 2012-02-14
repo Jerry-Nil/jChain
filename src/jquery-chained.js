@@ -3,8 +3,8 @@
  * This jquery plugin based on the value of a select tag to change the value of another select tag.
  * @name jquery-chained.js
  * @author Jerry
- * @version 1.2.0
- * @date February 7, 2012
+ * @version 1.2.1
+ * @date February 14, 2012
  * @category jQuery plugin
  * @copyright (c) 2012 Jerry
  * @weibo http://weibo.com/jerrynil
@@ -12,10 +12,68 @@
  * @QQ superzcj_001@163.com
  */
 var debug=true;
-var cf=false;
+$.cf=false;
 if(typeof(console)!='undefined'){cf=true;}
-cf=cf&debug;
+cf=cf&&debug;
 (function($){
+	/**
+	 * Output log information to the console
+	 */
+	$.log = function(){
+		if(cf){
+			if(arguments.length==1){
+				console.log(arguments[0]);
+			}
+			else if(arguments.length>1){
+				var code="console.log(arguments[0]";
+				for(i=1;i<arguments.length;i++){
+					code=code+",arguments["+i+"]";
+				}
+				code=code+");";
+				eval(code);
+			}
+		}
+	};
+	$.fn.log = function(){
+		$.log("%o", $(this)[0]);
+		return $(this);
+	}
+	/**
+	 * Output a warning message to the console
+	 */
+	$.warn = function(){
+		if(cf){
+			if(arguments.length==1){
+				console.warn(arguments[0]);
+			}
+			else if(arguments.length>1){
+				var code="console.warn(arguments[0]";
+				for(i=1;i<arguments.length;i++){
+					code=code+",arguments["+i+"]";
+				}
+				code=code+");";
+				eval(code);
+			}
+		}
+	};
+	/**
+	 * Output error message to the console
+	 */
+	$.error = function(){
+		if(cf){
+			if(arguments.length==1){
+				console.error(arguments[0]);
+			}
+			else if(arguments.length>1){
+				var code="console.error(arguments[0]";
+				for(i=1;i<arguments.length;i++){
+					code=code+",arguments["+i+"]";
+				}
+				code=code+");";
+				eval(code);
+			}
+		}
+	};
 	/**
 	 * add an option into the select tag
 	 * @param json item
@@ -81,56 +139,59 @@ cf=cf&debug;
 	};
 	/**
 	 * core function
-	 * @param json options
-	 * - targetId
-	 * - url
-	 * - value
-	 * - text
+	 * @param string targetId
+	 * @param string url
+	 * @param string value
+	 * @param string text
+	 * @param boolean autorun
 	 */
-	$.fn.chained = function(options){
+	$.fn.chained = function(){
+		//获得参数
 		var $this=$(this);
-		if(typeof(options)=='undefined'){
-			if(cf){console.warn('No options.');}
-			return;
+		var args=arguments[0];
+		//如果没有任何参数就退出
+		if(typeof(args)=='undefined'){
+			if(cf){console.warn('No args.');}
+			return $this;
 		}
-		var targetId=options.targetId;
-		var url=options.url;
-		var autorun=options.autorun||false;
-		var defalutOption={value:options.value||'0',text:options.text||'------',};
+		//初始化
+		var targetId='#'+args.targetId;
+		var url=args.url;
+		var autorun=args.autorun||false;
+		var defalutOption={value:args.value||'0',text:args.text||'------',};
+		//检测参数是否正确
 		if(typeof(targetId)=='undefined'){
 			if(cf){console.warn('targetId is not defined.');}
-			return;
+			return $this;
 		}
 		if(typeof(url)=='undefined'){
 			if(cf){console.warn('url is not defined.');}
-			return;
+			return $this;
 		}
-		$('#'+targetId).addOption(defalutOption);
+		$(targetId).addOption(defalutOption);
 		$this.change(function()
 		{
-			if(cf){console.log("Target:%o\nURL:%s", $('#'+targetId), url);}
+			if(cf){console.log("Target:%o\nURL:%s", $(targetId), url);}
 			var sv=$this.getSelectedOptionValue();
 			$.get(url,{opt:sv},function(data){
-				$('#'+targetId).clearOptions();
-				$('#'+targetId).addOption(defalutOption);
+				$(targetId).clearOptions();
+				$(targetId).addOption(defalutOption);
 				if(cf){console.log("Data Type:%s\nData:%o", typeof(data), data);}
 				if(typeof(data)=='undefined'||typeof(data)!='object'){
-					//if(cf){console.log("Data Type:%s\nData:%o", typeof(data), data);}
 					if(cf){console.warn("The type of data is not correct.");}
-					return;
+					return $this;
 				}
 				else if(typeof(data.options)=='object'){
-					//if(cf){console.log("Data Type:%s\nData:%o", typeof(data), data);}
 					if(cf){console.log("Options Type:%s\nData:%o", typeof(data.options), data.options);}
 					for(i=0;i<data.options.length;i++){
-						$('#'+targetId).addOption(data.options[i]);
+						$(targetId).addOption(data.options[i]);
 					};
 				}
 				else if(typeof(data.options)=='undefined'&&typeof(data[sv])=='object'){
 					var dataChild=data[sv];
 					if(cf){console.log("Data(child) Type:%s\nData:%o", typeof(dataChild), dataChild);}
 					for(i=0;i<dataChild.options.length;i++){
-						$('#'+targetId).addOption(dataChild.options[i]);
+						$(targetId).addOption(dataChild.options[i]);
 					};
 				}
 				else if(typeof(data[sv])=='undefined'){
@@ -144,5 +205,6 @@ cf=cf&debug;
 		if(autorun){
 			$this.change();
 		}
+		return $(targetId);
 	};
 })(jQuery);
