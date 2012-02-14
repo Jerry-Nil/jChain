@@ -12,7 +12,7 @@
  * @QQ superzcj_001@163.com
  */
 var debug=true;
-$.cf=false;
+cf=false;
 if(typeof(console)!='undefined'){cf=true;}
 cf=cf&&debug;
 (function($){
