@@ -1,0 +1,14 @@
+1.2.0
+1.chained函数添加了一个参数autorun,默认为false。当autorun为true时，select在chained后会自动触发change操作，即目标select会自动填充选项。
+2.基于第1点的改动，demo内的js也已经更新过了
+3.添加了change.txt
+
+1.1 添加了Readme.txt，正式发布为1.1版
+
+1.1beta3 修正了一个小BUG：现在可以在chained函数的options中加入默认选项的参数了，当然如果不加入的话，函数会自动填充一个进去
+
+1.1beta2 修改了数据不存在时的提示信息
+
+1.1beta1 添加了college.demo.js 修复了json格式引起的数据读取问题
+
+1.0 发布
