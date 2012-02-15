@@ -1,3 +1,4 @@
+var debug=!1;
 var ch=3;
 switch(ch){
 	case 1:{

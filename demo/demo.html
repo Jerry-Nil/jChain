@@ -15,10 +15,12 @@
 		<option value="99">其实我是个错误的选项</option>
 	</select>
 	<select name="s2" id="s2"></select>
+	<select name="s3" id="s3"></select>
 	<br />
 	<div>
-		<p><a id="at" href="javascript:;" onclick="$('#s2').addOption({value:'999999',text:'test'});">Click me</a> to add an option into the second select.</p>
+		<p><a id="at" href="javascript:;" onclick="$('#s2').addOption({value:'999999',text:'test'},true);">Click me</a> to add an option into the second select.</p>
 		<p>It used function addOption().</p>
+		<p><a id="at" href="javascript:;" onclick="$('#s3').addOption({value:'999999',text:'test'},true);">Click me</a></p>
 	</div>
 </div>
 <script type="text/javascript" src="demo.js"></script>

@@ -12,10 +12,20 @@
  * @QQ superzcj_001@163.com
  */
 var debug=true;
-cf=false;
+var cf=false;
 if(typeof(console)!='undefined'){cf=true;}
 cf=cf&&debug;
 (function($){
+	/**
+	 * @param boolean debug
+	 */
+	function setDebug(){
+		if(typeof(arguments[0])=='boolean'){
+			debug=debug||arguments[0];
+			cf=cf&&debug;	
+		}
+		return cf;
+	}
 	/**
 	 * Output log information to the console
 	 */
@@ -76,31 +86,34 @@ cf=cf&&debug;
 	};
 	/**
 	 * add an option into the select tag
-	 * @param json item
-	 * - value string	value of the option
-	 * - text string	innerHTML of the option
+	 * @param string value
+	 * @param string	text
 	 */
-	$.fn.addOption = function(item){
-		var $this=$(this)[0];
-		if(typeof($this)=='undefined'){
-			if(cf){console.warn("Not found.");}
-			return;
+	$.fn.addOption = function(){
+		var option=arguments[0];
+		//alert(typeof(arguments[1]));
+		if(typeof(arguments[1])=='boolean'){
+			setDebug(arguments[1]);
 		}
-		if($this.tagName!='SELECT'){
-			if(cf){console.warn("The type of tag is not correct.");}
-			return;
+		if(typeof($(this)[0])=='undefined'){
+			$.warn("Not found.");
+			return this;
 		}
-		if(typeof(item)=='undefined'){
-			if(cf){console.warn("The parameter is incorrect.");}
-			return;
+		if($(this)[0].tagName!='SELECT'){
+			$.warn("The type of tag is not correct.");
+			return this;
 		}
-		if(typeof(item.value)=='undefined' || typeof(item.text)=='undefined'){
-			if(cf){console.warn("The parameter is empty.");}
-			return;
+		if(typeof(option)!='object'){
+			$.warn("The parameter is incorrect.");
+			return this;
 		}
-		var option="<option value="+item.value+">"+item.text+"</option>";
+		if(typeof(option.value)=='undefined' || typeof(option.text)=='undefined'){
+			$.warn("The parameter is empty.");
+			return this;
+		}
+		var option="<option value="+option.value+">"+option.text+"</option>";
 		$(this).append(option);
-		return;
+		return this;
 	};
 	/**
 	 * remove all options
@@ -108,11 +121,11 @@ cf=cf&&debug;
 	$.fn.clearOptions = function(){
 		var $this=$(this)[0];
 		if(typeof($this)=='undefined'){
-			if(cf){console.warn("Not found.");}
+			$.warn("Not found.");
 			return;
 		}
 		if($this.tagName!='SELECT'){
-			if(cf){console.warn("The type of tag is not correct.");}
+			$.warn("The type of tag is not correct.");
 			return;
 		}
 		$(this).text('');
@@ -124,15 +137,15 @@ cf=cf&&debug;
 	$.fn.getSelectedOptionValue = function(){
 		var $this=$(this)[0];
 		if(typeof($this)=='undefined'){
-			if(cf){console.log("Not found.");}
+			$.log("Not found.");
 			return;
 		}
 		if($this.tagName!='SELECT'){
-			if(cf){console.log("The type of tag is not correct.");}
+			$.log("The type of tag is not correct.");
 			return;
 		}
 		if($this.options.length==0){
-			if(cf){console.warn("The select is empty.");}
+			$.warn("The select is empty.");
 			return null;
 		}
 		return $this[$this.selectedIndex].value;
@@ -151,8 +164,13 @@ cf=cf&&debug;
 		var args=arguments[0];
 		//如果没有任何参数就退出
 		if(typeof(args)=='undefined'){
-			if(cf){console.warn('No args.');}
+			$.warn('No args.');
 			return $this;
+		}
+		//如果标签类型不对就退出
+		if($this[0].tagName!='SELECT'){
+			$.warn("The type of tag is not correct.");
+			return;
 		}
 		//初始化
 		var targetId='#'+args.targetId;
@@ -161,44 +179,44 @@ cf=cf&&debug;
 		var defalutOption={value:args.value||'0',text:args.text||'------',};
 		//检测参数是否正确
 		if(typeof(targetId)=='undefined'){
-			if(cf){console.warn('targetId is not defined.');}
+			$.warn('targetId is not defined.');
 			return $this;
 		}
 		if(typeof(url)=='undefined'){
-			if(cf){console.warn('url is not defined.');}
+			$.warn('url is not defined.');
 			return $this;
 		}
 		$(targetId).addOption(defalutOption);
 		$this.change(function()
 		{
-			if(cf){console.log("Target:%o\nURL:%s", $(targetId), url);}
+			$.log("Target:%o\nURL:%s", $(targetId), url);
 			var sv=$this.getSelectedOptionValue();
 			$.get(url,{opt:sv},function(data){
 				$(targetId).clearOptions();
 				$(targetId).addOption(defalutOption);
-				if(cf){console.log("Data Type:%s\nData:%o", typeof(data), data);}
+				$.log("Data Type:%s\nData:%o", typeof(data), data);
 				if(typeof(data)=='undefined'||typeof(data)!='object'){
-					if(cf){console.warn("The type of data is not correct.");}
+					$.warn("The type of data is not correct.");
 					return $this;
 				}
 				else if(typeof(data.options)=='object'){
-					if(cf){console.log("Options Type:%s\nData:%o", typeof(data.options), data.options);}
+					$.log("Options Type:%s\nData:%o", typeof(data.options), data.options);
 					for(i=0;i<data.options.length;i++){
 						$(targetId).addOption(data.options[i]);
 					};
 				}
 				else if(typeof(data.options)=='undefined'&&typeof(data[sv])=='object'){
 					var dataChild=data[sv];
-					if(cf){console.log("Data(child) Type:%s\nData:%o", typeof(dataChild), dataChild);}
+					$.log("Data(child) Type:%s\nData:%o", typeof(dataChild), dataChild);
 					for(i=0;i<dataChild.options.length;i++){
 						$(targetId).addOption(dataChild.options[i]);
 					};
 				}
 				else if(typeof(data[sv])=='undefined'){
-					if(cf){console.warn("Unknown Data.\n%o", data);}
+					$.warn("Unknown Data.\n%o", data);
 				}
 				else{
-					if(cf){console.error("Unknown Error.\n%o", data);}
+					$.error("Unknown Error.\n%o", data);
 				}
 			},"json");
 		});
