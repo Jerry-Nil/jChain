@@ -16,21 +16,22 @@ var cf=false;
 if(typeof(console)!='undefined'){cf=true;}
 cf=cf&&debug;
 (function($){
+	$.extend({'cf':false,'debug':true});
+	if(typeof(console)!='undefined'){$.cf=true;}
 	/**
 	 * @param boolean debug
 	 */
-	function setDebug(){
+	$.setDebug = function(){
 		if(typeof(arguments[0])=='boolean'){
-			debug=debug||arguments[0];
-			cf=cf&&debug;	
+			$.debug=arguments[0];
 		}
-		return cf;
+		return ($.cf && $.debug);
 	}
 	/**
 	 * Output log information to the console
 	 */
 	$.log = function(){
-		if(cf){
+		if($.cf && $.debug){
 			if(arguments.length==1){
 				console.log(arguments[0]);
 			}
@@ -52,7 +53,7 @@ cf=cf&&debug;
 	 * Output a warning message to the console
 	 */
 	$.warn = function(){
-		if(cf){
+		if($.cf && $.debug){
 			if(arguments.length==1){
 				console.warn(arguments[0]);
 			}
@@ -70,7 +71,7 @@ cf=cf&&debug;
 	 * Output error message to the console
 	 */
 	$.error = function(){
-		if(cf){
+		if($.cf && $.debug){
 			if(arguments.length==1){
 				console.error(arguments[0]);
 			}
@@ -91,10 +92,6 @@ cf=cf&&debug;
 	 */
 	$.fn.addOption = function(){
 		var option=arguments[0];
-		//alert(typeof(arguments[1]));
-		if(typeof(arguments[1])=='boolean'){
-			setDebug(arguments[1]);
-		}
 		if(typeof($(this)[0])=='undefined'){
 			$.warn("Not found.");
 			return this;
@@ -119,17 +116,16 @@ cf=cf&&debug;
 	 * remove all options
 	 */
 	$.fn.clearOptions = function(){
-		var $this=$(this)[0];
-		if(typeof($this)=='undefined'){
+		if(typeof($(this)[0])=='undefined'){
 			$.warn("Not found.");
-			return;
+			return this;
 		}
-		if($this.tagName!='SELECT'){
+		if($(this)[0].tagName!='SELECT'){
 			$.warn("The type of tag is not correct.");
-			return;
+			return this;
 		}
 		$(this).text('');
-		return;
+		return this;
 	};
 	/**
 	 * get the value of the currently selected option
