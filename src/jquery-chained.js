@@ -11,10 +11,6 @@
  * @email jerry.hz.china@gmail.com
  * @QQ superzcj_001@163.com
  */
-var debug=true;
-var cf=false;
-if(typeof(console)!='undefined'){cf=true;}
-cf=cf&&debug;
 (function($){
 	$.extend({'cf':false,'debug':true});
 	if(typeof(console)!='undefined'){$.cf=true;}
