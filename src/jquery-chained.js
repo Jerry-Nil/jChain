@@ -139,7 +139,7 @@
 		}
 		if($this.options.length==0){
 			$.warn("The select is empty.");
-			return null;
+			return;
 		}
 		return $this[$this.selectedIndex].value;
 	};
@@ -155,15 +155,19 @@
 		//获得参数
 		var $this=$(this);
 		var args=arguments[0];
-		//如果没有任何参数就退出
-		if(typeof(args)=='undefined'){
-			$.warn('No args.');
-			return $this;
+		if(typeof($(this)[0])=='undefined'){
+			$.warn("Not found.");
+			return;
 		}
 		//如果标签类型不对就退出
 		if($this[0].tagName!='SELECT'){
 			$.warn("The type of tag is not correct.");
 			return;
+		}
+		//如果没有任何参数就退出
+		if(typeof(args)=='undefined'){
+			$.warn('No args.');
+			return $this;
 		}
 		//初始化
 		var targetId='#'+args.targetId;
