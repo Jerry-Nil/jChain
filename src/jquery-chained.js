@@ -13,6 +13,7 @@
  */
 (function($){
 	$.extend({'cf':false,'debug':true});
+	var _self=$.fn;
 	if(typeof(console)!='undefined'){$.cf=true;}
 	/**
 	 * @param boolean debug
@@ -41,7 +42,7 @@
 			}
 		}
 	};
-	$.fn.log = function(){
+	_self.log = function(){
 		$.log("%o", $(this)[0]);
 		return $(this);
 	}
@@ -86,7 +87,7 @@
 	 * @param string value
 	 * @param string	text
 	 */
-	$.fn.addOption = function(){
+	_self.addOption = function(){
 		var option=arguments[0];
 		if(typeof($(this)[0])=='undefined'){
 			$.warn("Not found.");
@@ -111,7 +112,7 @@
 	/**
 	 * remove all options
 	 */
-	$.fn.clearOptions = function(){
+	_self.clearOptions = function(){
 		if(typeof($(this)[0])=='undefined'){
 			$.warn("Not found.");
 			return this;
@@ -126,7 +127,7 @@
 	/**
 	 * get the value of the currently selected option
 	 */
-	$.fn.getSelectedOptionValue = function(){
+	_self.getSelectedOptionValue = function(){
 		var $this=$(this)[0];
 		if(typeof($this)=='undefined'){
 			$.log("Not found.");
@@ -150,7 +151,7 @@
 	 * @param string text
 	 * @param boolean autorun
 	 */
-	$.fn.chained = function(){
+	_self.chained = function(){
 		//获得参数
 		var $this=$(this);
 		var args=arguments[0];
