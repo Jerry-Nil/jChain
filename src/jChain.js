@@ -4,7 +4,7 @@
 * @name jquery-chained.js
 * @author Jerry
 * @version 1.2.1
-* @date February 14, 2012
+* @date February 24, 2012
 * @category jQuery plugin
 * @copyright (c) 2012 Jerry
 * @weibo http://weibo.com/jerrynil
@@ -174,7 +174,7 @@
 		var target=args.target;
 		var url=args.url;
 		var autorun=args.autorun||false;
-		var defalutOption={value:args.value||'0',text:args.text||'------'};
+		var defalutOption={value:args.value||'0',text:args.text||'--'};
 		//检测参数是否正确
 		if(typeof(target)==='undefined'){
 			$.warn('target is not defined.');
