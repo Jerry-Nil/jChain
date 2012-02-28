@@ -1,3 +1,5 @@
+1.2.1
+1.添加了$.log(),$.warn(),$.error()日志输出功能，插件正式放到github上
 1.2.0
 1.chained函数添加了一个参数autorun,默认为false。当autorun为true时，select在chained后会自动触发change操作，即目标select会自动填充选项。
 2.基于第1点的改动，demo内的js也已经更新过了
